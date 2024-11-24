@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .menu {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .menu a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .menu a:hover {
+            text-decoration: underline;
+        }
+        .main-container {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 60px;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fafafa;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .ad {
+            margin-left: 30px;
+            width: 200px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .ad img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .ad-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 16px;
+            height: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .ad-close:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .ad.closed {
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .ad {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="home.html" target="_blank">Home</a>
+        <a href="about.html" target="_blank">About Us</a>
+        <a href="contact.html" target="_blank">Contact</a>
+    </div>
+    <div class="main-container">
+        <div class="container">
+            <h1>Appointment Form</h1>
+            <form id="appointmentForm" method="POST">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="phone">Phone:</label>
+                <div style="display: flex; gap: 10px;">
+                    <select id="areaCode" required></select>
+                    <input type="text" id="phone" name="phone" placeholder="5551234567" required>
+                </div>
+                <label for="city">City:</label>
+                <select id="city" name="city" required></select>
+                <label for="courseType">Course Type:</label>
+                <select id="courseType" name="courseType" required></select>
+
+                <label for="location">How would you like to be located?</label>
+                <select id="location" name="location" required>
+                    <option value="phone">By Phone</option>
+                    <option value="email">By Email</option>
+                    <option value="sms">SMS Message</option>
+                </select>
+                
+                <label for="timeSlot">Preferred Time Slot:</label>
+                <select id="timeSlot" name="timeSlot" required>
+                    <option value="10:00-12:00">10:00 - 12:00</option>
+                    <option value="14:00-16:00">14:00 - 16:00</option>
+                    <option value="18:00">18:00 - 20:00</option>
+                </select>
+
+                <label><input type="checkbox" id="terms" required> I accept the terms and conditions</label>
+                <button type="button" onclick="validateForm()">Submit</button>
+            </form>
+        </div>
+        <div class="ad" id="adContainer">
+            <button class="ad-close" onclick="closeAd()">X</button>
+            <a href="https://example.com" target="_blank" onclick="hideAd(event)">
+                <img src="images/Endeks-Infografik-scaled.jpg" alt="Ad Image">
+            </a>
+        </div>
+    </div>
+    <script>
+        function closeAd() {
+            const adContainer = document.getElementById('adContainer');
+            adContainer.classList.add('closed'); 
+        }
+
+        function hideAd(event) {
+            event.preventDefault(); 
+            const adContainer = document.getElementById('adContainer');
+            adContainer.classList.add('closed');
+            setTimeout(() => {
+                window.open("https://www.paribu.com/", "_blank"); 
+            }, 100); 
+        }
+
+        fetch('https://run.mocky.io/v3/53c5df62-d892-47b1-a9ba-1de295f567f0')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const cities = data.data.cities;
+                const courseTypes = data.data.courseTypes;
+                const citySelect = document.getElementById('city');
+                const courseTypeSelect = document.getElementById('courseType');
+
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+
+                courseTypes.forEach(courseType => {
+                    const option = document.createElement('option');
+                    option.value = courseType;
+                    option.textContent = courseType;
+                    courseTypeSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to fetch data! Please try again.');
+            });
+
+        const areaCodes = ["212", "216", "312", "232", "224", "262", "272"];
+        const areaCodeSelect = document.getElementById('areaCode');
+        areaCodes.forEach(code => {
+            const option = document.createElement('option');
+            option.value = code;
+            option.textContent = `+90 ${code}`;
+            areaCodeSelect.appendChild(option);
+        });
+
+        function validateForm() {
+            const nameInput = document.getElementById('name').value;
+            if (nameInput.trim() === "") {
+                alert("Full Name cannot be empty!");
+                return;
+            }
+            const emailInput = document.getElementById('email').value;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(emailInput)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            const phoneInput = document.getElementById('phone').value;
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phoneInput)) {
+                alert("Please enter a valid phone number (5551234567 format).");
+                return;
+            }
+            const termsChecked = document.getElementById('terms').checked;
+            if (!termsChecked) {
+                alert("You must accept the terms and conditions to submit the form!");
+                return;
+            }
+            alert('Form submitted successfully!');
+            document.getElementById('appointmentForm').reset(); 
+        }
+    </script>
+</body>
+</html>
